@@ -8,7 +8,7 @@ SESSION_NAME = "AgDF7ddL96lyRbBuBtgh1eS-S9-ifI83znMDOjgWKtO6p1FZTCL7Iy_m5QtOa8Pu
 PLUGINS = dict(
     root="plugins",
     include=[
-        "vc.radio",
+        "vc.player",
         "ping",
         "sysinfo"
     ]
