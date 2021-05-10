@@ -1,18 +1,17 @@
-HELP_TEXT = """__**I Can Play Music In The Voice Chat**__
+HELP_TEXT = """**Userbot buyruqlari:**
 
-**/help** __Show This Message.__
-**/skip** __Skip The Current Playing Music.__
-**/play** __youtube/saavn/deezer Song_Name__
-**/telegram** __Play From Telegram Audio.__
-**/joinvc** __Join Voice Chat.__
-**/rejoinvc** __Rejoin Voice Chat.__
-**/leavevc** __Leave Voice Chat.__
-**/volume [1-200]** __Adjust Volume.__
-**/pause** __Pause Music.__
-**/resume** __Resume Music.__
-**/update** __Update & Restart.__"""
+/help Userbot haqida
+/skip Keyingi musiqaga o'tkazish
+/play youtube/saavn/deezer Musiqa_nomi
+/telegram Telegramdagi musiqani ijro etish
+/joinvc Ovozli chatga qo'shish
+/rejoinvc Ovozli chatga qayta qo'shish
+/leavevc Ovozli chatdan chiqish
+/volume [1-200] Ovoz balandligini sozlash
+/pause Ijroni to'htatish
+/resume Ijroni davom etish
+/update Qayta ishga tushirish"""
 
-START_TEXT = "__**Hi I'm Telegram Voice Chat Bot. Created by @izzatbe.**__"
+START_TEXT = "Hi I'm Telegram Voice Chat Bot. Created by @izzatbe."
 
-REPO_TEXT = "[Github](https://github.com/thehamkercat/Telegram_vc_bot)" \
-            + " | [Group](t.me/PatheticProgrammers)"
+REPO_TEXT = "Repo: https://github.com/thehamkercat/Telegram_vc_bot"
