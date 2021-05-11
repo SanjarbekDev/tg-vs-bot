@@ -135,7 +135,7 @@ async def resume_song(_, message):
 
 @app.on_message(filters.command("volume") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def volume_bot(_, message):
-    usage = "**Usage:**\n/volume [1-200]"
+    usage = "Ovoz balandligini quyidagicha sozlang:\n\n/volume [1-200]"
     if len(message.command) != 2:
         await send(usage)
         return
@@ -153,7 +153,7 @@ async def volume_bot(_, message):
 
 @app.on_message(filters.command("play") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def queuer(_, message):
-    usage = "Yo'riqnoma:\n/play youtube/saavn/deezer Musiqa_nomi"
+    usage = "Musiqani ijro etish quyidagicha:\n\n/play youtube/saavn/deezer Musiqa_nomi"
     if len(message.command) < 3:
         await send(usage)
         return
@@ -395,30 +395,30 @@ async def ytplay(requested_by, query):
 async def tgplay(_, message):
     global playing
     if len(queue) != 0:
-        await send("__**You Can Only Play Telegram Files After The Queue Gets "
-                   + "Finished.**__")
+        await send("You Can Only Play Telegram Files After The Queue Gets "
+                   + "Finished.")
         return
     if not message.reply_to_message:
-        await send("__**Reply to an audio.**__")
+        await send("Musiqa faylini ko'rsating.")
         return
     if message.reply_to_message.audio:
         if int(message.reply_to_message.audio.file_size) >= 104857600:
-            await send("__**Bruh! Only songs within 100 MB.**__")
+            await send("Musiqa hajmi 100 megabaytdan oshmasligi kerak.")
             playing = False
             return
         duration = message.reply_to_message.audio.duration
         if not duration:
-            await send("__**Only Songs With Duration Are Supported.**__")
+            await send("Musiqani ijro etib bo'lmadi.")
             return
-        m = await send("__**Downloading.**__")
+        m = await send("Yuklab olinmoqda.")
         song = await message.reply_to_message.download()
-        await m.edit("__**Transcoding.**__")
+        await m.edit("Saqlandi.")
         transcode(song)
-        await m.edit(f"**Playing** __**{message.reply_to_message.link}.**__")
+        await m.edit(f"Tayyor: {message.reply_to_message.link}")
         await asyncio.sleep(duration)
         playing = False
         return
-    await send("__**Only Audio Files (Not Document) Are Supported.**__")
+    await send("Bu faylni ijro etib bo'lmaydi.")
 
 
 async def send(text):
