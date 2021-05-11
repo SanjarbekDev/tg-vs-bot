@@ -20,33 +20,21 @@ from functions import (
 # TODO Make it look less messed up
 is_config = os.path.exists("config.py")
 
-if is_config:
-    from config import (
-        API_ID, API_HASH,
-        SUDO_CHAT_ID,
-        SUDOERS, ARQ_API, HEROKU
-    )
-elif not is_config:
-    from sample_config import (
-        API_ID, API_HASH,
-        SUDO_CHAT_ID,
-        SUDOERS, ARQ_API, HEROKU
-    )
-
-if HEROKU:
-    if is_config:
-        from config import SESSION_STRING
-    elif not is_config:
-        from sample_config import SESSION_STRING
+from config import (
+    API_ID,
+    API_HASH,
+    SUDO_CHAT_ID,
+    SUDOERS,
+    SESSION_STRING,
+    ARQ_API,
+)
 
 queue = []  # This is where the whole song queue is stored
 playing = False  # Tells if something is playing or not
 
 # Pyrogram Client
-if not HEROKU:
-    app = Client("tgvc", api_id=API_ID, api_hash=API_HASH)
-else:
-    app = Client(SESSION_STRING, api_id=API_ID, api_hash=API_HASH)
+
+app = Client(SESSION_STRING, api_id=API_ID, api_hash=API_HASH)
 
 # Pytgcalls Client
 vc = GroupCall(
@@ -84,11 +72,11 @@ async def repo(_, message):
 async def joinvc(_, message):
     try:
         if vc.is_connected:
-            await send("__**Bot Is Already In Voice Chat.**__")
+            await send("Bot allaqachon ovozli chatga qo'shilgan.")
             return
         chat_id = message.chat.id
         await vc.start(chat_id)
-        await send("__**Joined The Voice Chat.**__")
+        await send("Ovozli chatga qo'shildi.")
     except Exception as e:
         print(str(e))
         await send(str(e))
@@ -98,11 +86,11 @@ async def joinvc(_, message):
 async def joinvc(_, message):
     try:
         if vc.is_connected:
-            await send("__**Bot Is Already In Voice Chat.**__")
+            await send("Bot allaqachon ovozli chatga qo'shilgan.")
             return
         chat_id = message.chat.id
         await vc.reconnect()
-        await send("__**Joined The Voice Chat.**__")
+        await send("Ovozli chatga qo'shildi.")
     except Exception as e:
         print(str(e))
         await send(str(e))
@@ -111,11 +99,11 @@ async def joinvc(_, message):
 @app.on_message(filters.command("leavevc") & filters.user(SUDOERS))
 async def leavevc(_, message):
     if not vc.is_connected:
-        await send("__**Already Out Of Voice Chat.**__")
+        await send("Bot ovozli chatga qo'shilmagan.")
         return
     await vc.leave_current_group_call()
     await vc.stop()
-    await send("__**Left The Voice Chat, Restarting Client....**__")
+    await send("Ovzoli chatdan chiqdi.")
     os.execvp(
         f"python{str(pyver.split(' ')[0])[:3]}",
         [f"python{str(pyver.split(' ')[0])[:3]}", "main.py"],
@@ -133,19 +121,19 @@ async def update_restart(_, message):
     )
 
 
-@app.on_message(filters.command("pause") & filters.chat(SUDO_CHAT_ID))
+@app.on_message(filters.command("pause") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def pause_song(_, message):
     vc.pause_playout()
-    await send("**Paused The Music, Send /resume To Resume.**")
+    await send("Ijro to'htatildi, davom etish uchun /resume yuboring.")
 
 
-@app.on_message(filters.command("resume") & filters.chat(SUDO_CHAT_ID))
+@app.on_message(filters.command("resume") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def resume_song(_, message):
     vc.resume_playout()
-    await send("**Resumed, Send /pause To Pause The Music.**")
+    await send("Ijro davom ettirildi, to'htatish uchun /pause yuboring.")
 
 
-@app.on_message(filters.command("volume") & filters.chat(SUDO_CHAT_ID))
+@app.on_message(filters.command("volume") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def volume_bot(_, message):
     usage = "**Usage:**\n/volume [1-200]"
     if len(message.command) != 2:
@@ -160,12 +148,12 @@ async def volume_bot(_, message):
     except ValueError:
         await send(usage)
         return
-    await send(f"**Volume Set To {volume}**")
+    await send(f"Ovoz balandligi **{volume}**ga o'zgartirildi.")
 
 
-@app.on_message(filters.command("play") & filters.chat(SUDO_CHAT_ID))
+@app.on_message(filters.command("play") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def queuer(_, message):
-    usage = "**Usage:**\n__**/play youtube/saavn/deezer Song_Name**__"
+    usage = "Yo'riqnoma:\n/play youtube/saavn/deezer Musiqa_nomi"
     if len(message.command) < 3:
         await send(usage)
         return
@@ -179,7 +167,7 @@ async def queuer(_, message):
         return
     if len(queue) > 0:
         await message.delete()
-        await send("__**Added To Queue.__**")
+        await send("Playlistga qo'shildi.")
         queue.append(
             {
                 "service": service,
@@ -206,28 +194,28 @@ async def queuer(_, message):
 async def skip(_, message):
     global playing
     if len(queue) == 0:
-        await send("__**Queue Is Empty, Just Like Your Life.**__")
+        await send("Playlistda keyingi musiqa topilmadi.")
         return
     playing = False
-    await send("__**Skipped!**__")
+    await send("O'tkazib yuborildi.")
     await play()
 
 
-@app.on_message(filters.command("queue") & filters.chat(SUDO_CHAT_ID))
+@app.on_message(filters.command("queue") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
 async def queue_list(_, message):
     if len(queue) != 0:
         i = 1
         text = ""
         for song in queue:
-            text += f"**{i}. Platform:** __**{song['service']}**__ " \
-                     + f"| **Song:** __**{song['song']}**__\n"
+            text += f"{i}. Platforma: {song['service']} " \
+                     + f"| Musiqa nomi: **{song['song']}\n"
             i += 1
         m = await send(text)
         await delete(message)
         await m.delete()
 
     else:
-        m = await send("__**Queue Is Empty, Just Like Your Life.**__")
+        m = await send("Playlistda keyingi musiqa topilmadi.")
         await delete(message)
         await m.delete()
 
@@ -280,7 +268,7 @@ async def play():
 
 async def deezer(requested_by, query):
     global playing
-    m = await send(f"__**Searching for {query} on Deezer.**__")
+    m = await send(f"Deezer orqali {query} qidirilmoqda.")
     try:
         songs = await arq.deezer(query, 1)
         title = songs[0].title
@@ -289,18 +277,18 @@ async def deezer(requested_by, query):
         artist = songs[0].artist
         url = songs[0].url
     except Exception:
-        await m.edit("__**Found No Song Matching Your Query.**__")
+        await m.edit("Muisqa topilmadi.")
         playing = False
         return
-    await m.edit("__**Generating Thumbnail.**__")
+    await m.edit("Albom tayorlanmoqda.")
     await generate_cover_square(
         requested_by, title, artist, duration, thumbnail
     )
-    await m.edit("__**Downloading And Transcoding.**__")
+    await m.edit("Yuklab olinmoqda.")
     await download_and_transcode_song(url)
     await m.delete()
-    caption = f"🏷 **Name:** [{title[:35]}]({url})\n⏳ **Duration:** {duration}\n" \
-               + f"🎧 **Requested By:** {requested_by}\n📡 **Platform:** Deezer"
+    caption = f"🏷 Musiqa nomi: [{title[:35]}]({url})\n⏳ Davomiyligi: {duration}\n" \
+               + f"🎧 Buyurtmachi: {requested_by}\n📡 Platforma: Deezer"
     m = await app.send_photo(
         chat_id=SUDO_CHAT_ID,
         photo="final.png",
@@ -317,7 +305,7 @@ async def deezer(requested_by, query):
 
 async def jiosaavn(requested_by, query):
     global playing
-    m = await send(f"__**Searching for {query} on JioSaavn.**__")
+    m = await send(f"JioSaavn orqali {query} qidirilmoqda.")
     try:
         songs = await arq.saavn(query)
         sname = songs[0].song
@@ -327,19 +315,19 @@ async def jiosaavn(requested_by, query):
         sduration = songs[0].duration
         sduration_converted = convert_seconds(int(sduration))
     except Exception as e:
-        await m.edit("__**Found No Song Matching Your Query.**__")
+        await m.edit("Muisqa topilmadi.")
         print(str(e))
         playing = False
         return
-    await m.edit("__**Processing Thumbnail.**__")
+    await m.edit("Albom tayorlanmoqda.")
     await generate_cover_square(
         requested_by, sname, ssingers, sduration_converted, sthumb
     )
-    await m.edit("__**Downloading And Transcoding.**__")
+    await m.edit("Yuklab olinmoqda.")
     await download_and_transcode_song(slink)
     await m.delete()
-    caption = f"🏷 **Name:** {sname[:35]}\n⏳ **Duration:** {sduration_converted}\n" \
-               + f"🎧 **Requested By:** {requested_by}\n📡 **Platform:** JioSaavn"
+    caption = f"🏷 Musiqa nomi: {sname[:35]}\n⏳ Davomiyligi: {sduration_converted}\n" \
+               + f"🎧 Buyurtmachi: {requested_by}\n📡 Platforma: JioSaavn"
     m = await app.send_photo(
         chat_id=SUDO_CHAT_ID,
         caption=caption,
@@ -357,7 +345,7 @@ async def jiosaavn(requested_by, query):
 async def ytplay(requested_by, query):
     global playing
     ydl_opts = {"format": "bestaudio"}
-    m = await send(f"__**Searching for {query} on YouTube.**__")
+    m = await send(f"YouTube orqali {query} qidirilmoqda.")
     try:
         results = await arq.youtube(query)
         link = f"https://youtube.com{results[0].url_suffix}"
@@ -366,27 +354,27 @@ async def ytplay(requested_by, query):
         duration = results[0].duration
         views = results[0].views
         if time_to_seconds(duration) >= 1800:
-            await m.edit("__**Bruh! Only songs within 30 Mins.**__")
+            await m.edit("Kechirasiz musiqa davomiyligi 30 daqiqadan oshmasligi kerak.")
             playing = False
             return
     except Exception as e:
-        await m.edit("__**Found No Song Matching Your Query.**__")
+        await m.edit("Muisqa topilmadi.")
         playing = False
         print(str(e))
         return
-    await m.edit("__**Processing Thumbnail.**__")
+    await m.edit("Albom tayorlanmoqda.")
     await generate_cover(requested_by, title, views, duration, thumbnail)
-    await m.edit("__**Downloading Music.**__")
+    await m.edit("Yuklab olinmoqda.")
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(link, download=False)
         audio_file = ydl.prepare_filename(info_dict)
         ydl.process_info(info_dict)
-    await m.edit("__**Transcoding.**__")
+    await m.edit("Saqlandi.")
     os.rename(audio_file, "audio.webm")
     transcode("audio.webm")
     await m.delete()
-    caption = f"🏷 **Name:** [{title[:35]}]({link})\n⏳ **Duration:** {duration}\n" \
-               + f"🎧 **Requested By:** {requested_by}\n📡 **Platform:** YouTube"
+    caption = f"🏷 Musiqa nomi: [{title[:35]}]({link})\n⏳ Davomiyligi {duration}\n" \
+               + f"🎧 Buyurtmachi: {requested_by}\n📡 Platforma: YouTube"
     m = await app.send_photo(
         chat_id=SUDO_CHAT_ID,
         caption=caption,
@@ -402,7 +390,7 @@ async def ytplay(requested_by, query):
 
 
 @app.on_message(
-    filters.command("telegram") & filters.chat(SUDO_CHAT_ID) & ~filters.edited
+    filters.command("telegram") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS) & ~filters.edited
 )
 async def tgplay(_, message):
     global playing
@@ -441,7 +429,7 @@ async def send(text):
 
 
 print(
-    "\nBot Starting...\nFor Support Join https://t.me/PatheticProgrammers\n"
+    "\nBot ishlamoqda...\n"
 )
 
 
