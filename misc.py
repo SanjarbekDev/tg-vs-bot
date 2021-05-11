@@ -1,6 +1,6 @@
-HELP_TEXT = """**Bot buyruqlari:**
+HELP_TEXT = """**BOT BUYRUQLARI:**
 
-/help Userbot buyruqlari haqida
+/help Bot buyruqlari haqida
 /skip Keyingi musiqaga o'tkazish
 /play youtube/saavn/deezer Musiqa_nomi
 /telegram Telegramdagi musiqani ijro etish
@@ -12,6 +12,6 @@ HELP_TEXT = """**Bot buyruqlari:**
 /resume Ijroni davom etish
 /update Qayta ishga tushirish"""
 
-START_TEXT = "Bot buyruqlari haqida: /help"
+START_TEXT = "Bot ishlamoqda, buyruqlar: /help"
 
-REPO_TEXT = "Repo: https://github.com/thehamkercat/Telegram_vc_bot"
+REPO_TEXT = "[Github sahifaga kirish](https:github.com/izzatbekk/Telegram-vc-bot)"
