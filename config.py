@@ -1,8 +1,8 @@
-API_ID = 1234567
-API_HASH = "abcdefghijklmn012345opqrst"
-SUDO_CHAT_ID = -100123456789
-SUDOERS = [123456789, 708888699]
-SESSION_STRING = "Create a session" # Address to create: https://replit.com/@izzatbekk/pyrogram
+from os import environ
+API_ID = int(environ["API_ID"])
+API_HASH = environ["API_HASH"]
+SUDO_CHAT_ID = int(environ["SUDO_CHAT_ID"])
+SUDOERS = list(int(x) for x in environ.get("SUDOERS", "").split())
+SESSION_STRING = environ["SESSION_STRING"]
 
-# don't make changes below this line
 ARQ_API = "https://thearq.tech"
