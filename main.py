@@ -373,6 +373,7 @@ async def ytplay(requested_by, query):
     os.rename(audio_file, "audio.webm")
     transcode("audio.webm")
     await m.delete()
+    await app.update_profile(bio = f"{title} ijro etilmoqda.")
     caption = f"🏷 Musiqa nomi: [{title[:35]}]({link})\n⏳ Davomiyligi {duration}\n" \
                + f"🎧 Buyurtmachi: {requested_by}\n📡 Platforma: YouTube"
     m = await app.send_photo(
@@ -382,7 +383,6 @@ async def ytplay(requested_by, query):
     )
     os.remove("final.png")
     await asyncio.sleep(int(time_to_seconds(duration)))
-    await app.update_profile(bio=f"{title[:35]} ijro etilmoqda.")
     playing = False
     await m.delete()    
 
@@ -417,7 +417,6 @@ async def tgplay(_, message):
         transcode(song)
         await m.edit(f"Tayyor: {message.reply_to_message.link}")
         await asyncio.sleep(duration)
-        await app.update_profile(bio=f"{title[:35]} ijro etilmoqda.")
         playing = False
         return
     await send("Bu faylni ijro etib bo'lmaydi.")
