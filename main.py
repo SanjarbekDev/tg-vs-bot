@@ -380,6 +380,7 @@ async def ytplay(requested_by, query):
         caption=caption,
         photo="final.png",
     )
+    app.update_profile(bio="{title[:35]} ijro etilmoqda.")
     os.remove("final.png")
     await asyncio.sleep(int(time_to_seconds(duration)))
     playing = False
@@ -415,6 +416,7 @@ async def tgplay(_, message):
         await m.edit("Saqlandi.")
         transcode(song)
         await m.edit(f"Tayyor: {message.reply_to_message.link}")
+        app.update_profile(bio="{title[:35]} ijro etilmoqda.")
         await asyncio.sleep(duration)
         playing = False
         return
