@@ -373,7 +373,7 @@ async def ytplay(requested_by, query):
     os.rename(audio_file, "audio.webm")
     transcode("audio.webm")
     await m.delete()
-    await app.update_profile(bio = f"{title[:35]} ijro etilmoqda.")
+    m = await app.update_profile(bio = f"{title[:35]} ijro etilmoqda.")
     caption = f"🏷 Musiqa nomi: [{title[:35]}]({link})\n⏳ Davomiyligi {duration}\n" \
                + f"🎧 Buyurtmachi: {requested_by}\n📡 Platforma: YouTube"
     m = await app.send_photo(
