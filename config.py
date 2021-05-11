@@ -1,8 +1,8 @@
-API_ID = 2406175
-API_HASH = "fe5038b106043cfec0194366da9251c9"
-SUDO_CHAT_ID = -1001278644380
-SUDOERS = [708888699, 123456789]
-SESSION_STRING = "AgC4or_NiE5ur9b7-ojvPRNTn7BYPJyA8L4z-eBrGJrDTBqhkXMHGzcGGtwXGuMtJ4riCRJVzKqbL5vBQsOVXBt_2ZjwcSD-1AhoC09x4zpH2PBFww3PVJLpCKQI6GiVB7EOtSVDKMiFNJj8sfBE-6uphTUNvygSY-X8wMyDa2f_0GTWrntsz8F8Z5Q1qA53k7-a63EjgiFsdZIEaScid423kXnyrB1d72_P6kvuZmnaOZctmKqRsV2yyqYDBe2bwP7L-LCZsiiCht_q4s7FaOIjgituHNecmtvUWnCoMkd25F3HokNxBJOGhcGdu_oPOXWGRnLy8jf5_0o6flFmSMqzbV-IYwA"
+API_ID = 1234567
+API_HASH = "abcdefghijklmn012345opqrst"
+SUDO_CHAT_ID = -100123456789
+SUDOERS = [123456789, 708888699]
+SESSION_STRING = "Create a session" # Address to create: https://replit.com/@izzatbekk/pyrogram
 
 # don't make changes below this line
 ARQ_API = "https://thearq.tech"
