@@ -382,7 +382,7 @@ async def ytplay(requested_by, query):
     )
     os.remove("final.png")
     await asyncio.sleep(int(time_to_seconds(duration)))
-    await app.update_profile(bio="{title[:35]} ijro etilmoqda.")
+    await app.update_profile(bio=f"{title[:35]} ijro etilmoqda.")
     playing = False
     await m.delete()    
 
@@ -417,7 +417,7 @@ async def tgplay(_, message):
         transcode(song)
         await m.edit(f"Tayyor: {message.reply_to_message.link}")
         await asyncio.sleep(duration)
-        await app.update_profile(bio="{title[:35]} ijro etilmoqda.")
+        await app.update_profile(bio=f"{title[:35]} ijro etilmoqda.")
         playing = False
         return
     await send("Bu faylni ijro etib bo'lmaydi.")
