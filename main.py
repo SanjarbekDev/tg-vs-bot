@@ -121,19 +121,19 @@ async def update_restart(_, message):
     )
 
 
-@app.on_message(filters.command("pause") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
+@app.on_message(filters.command("pause") & filters.chat(SUDO_CHAT_ID))
 async def pause_song(_, message):
     vc.pause_playout()
     await send("Ijro to'htatildi, davom etish uchun /resume yuboring.")
 
 
-@app.on_message(filters.command("resume") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
+@app.on_message(filters.command("resume") & filters.chat(SUDO_CHAT_ID))
 async def resume_song(_, message):
     vc.resume_playout()
     await send("Ijro davom ettirildi, to'htatish uchun /pause yuboring.")
 
 
-@app.on_message(filters.command("volume") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
+@app.on_message(filters.command("volume") & filters.chat(SUDO_CHAT_ID))
 async def volume_bot(_, message):
     usage = "Ovoz balandligini quyidagicha sozlang:\n\n/volume [1-200]"
     if len(message.command) != 2:
@@ -151,7 +151,7 @@ async def volume_bot(_, message):
     await send(f"Ovoz balandligi **{volume}**ga o'zgartirildi.")
 
 
-@app.on_message(filters.command("play") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
+@app.on_message(filters.command("play") & filters.chat(SUDO_CHAT_ID))
 async def queuer(_, message):
     usage = "Musiqani ijro etish quyidagicha:\n\n/play youtube/saavn/deezer Musiqa_nomi"
     if len(message.command) < 3:
@@ -201,7 +201,7 @@ async def skip(_, message):
     await play()
 
 
-@app.on_message(filters.command("queue") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS))
+@app.on_message(filters.command("queue") & filters.chat(SUDO_CHAT_ID))
 async def queue_list(_, message):
     if len(queue) != 0:
         i = 1
@@ -391,7 +391,7 @@ async def ytplay(requested_by, query):
 
 
 @app.on_message(
-    filters.command("telegram") & filters.chat(SUDO_CHAT_ID) & filters.user(SUDOERS) & ~filters.edited
+    filters.command("telegram") & filters.chat(SUDO_CHAT_ID) & ~filters.edited
 )
 async def tgplay(_, message):
     global playing
@@ -430,7 +430,7 @@ async def send(text):
 
 
 print(
-    "\nBot ishlamoqda...\n"
+    "\nBot ishlamoqda...\nhttps://github.com/izzatbekk/Telegram-vc-bot\n"
 )
 
 
